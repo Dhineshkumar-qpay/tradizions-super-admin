@@ -77,7 +77,7 @@ const UserList = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-            Active Users
+            Tradizions Users
           </h1>
         </div>
         {/* <Button variant="accent">
@@ -98,9 +98,9 @@ const UserList = () => {
                 onChange={handleSearchChange}
               />
             </div>
-            <Button variant="outline">
+            {/* <Button variant="outline">
               <Filter className="w-4 h-4" /> Filter
-            </Button>
+            </Button> */}
           </div>
         </CardHeader>
 
@@ -131,9 +131,7 @@ const UserList = () => {
                   <th className="px-4 py-3 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
                     Joined Date
                   </th>
-                  <th className="px-4 py-3 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right">
-                    Actions
-                  </th>
+
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -172,42 +170,26 @@ const UserList = () => {
                             {user.username || "—"}
                           </p>
                           <p className="text-[10px] text-gray-400 font-semibold">
-                            {user.totalOrders || 0} Orders placed
+                            {user.ordercount || 0} Orders placed
                           </p>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-3 space-y-1 whitespace-nowrap">
                       <div className="flex items-center gap-1.5 text-[11px] text-gray-600 font-medium">
-                        <Phone className="w-3.5 h-3.5 text-gray-400" />{" "}
                         {user.phone || "—"}
                       </div>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1.5 text-[11px] text-gray-600 font-medium">
-                        <Mail className="w-3.5 h-3.5 text-gray-400" />{" "}
                         {user.email || "—"}
                       </div>
                     </td>
                     <td className="px-4 py-3 text-xs text-gray-400 font-semibold whitespace-nowrap">
                       <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-gray-300" />{" "}
                         {user.createdAt
                           ? new Date(user.createdAt).toLocaleDateString()
                           : "—"}
-                      </div>
-                    </td>
-                    <td
-                      className="px-4 py-3 text-right"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex justify-end gap-1">
-                        <button
-                          className="w-7 h-7 rounded-[10px] text-gray-400 hover:text-primary hover:bg-primary/10 transition-all flex items-center justify-center cursor-pointer"
-                          title="View Profile"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
                       </div>
                     </td>
                   </tr>

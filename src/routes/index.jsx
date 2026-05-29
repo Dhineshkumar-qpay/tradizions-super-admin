@@ -7,6 +7,7 @@ import MerchantCreate from '../pages/merchants/MerchantCreate';
 import MerchantDetail from '../pages/merchants/MerchantDetail';
 import ProductDetail from '../pages/products/ProductDetail';
 import GiftCardDetail from '../pages/giftcards/GiftCardDetail';
+import MerchantProducts from '../pages/merchants/MerchantProducts';
 
 import UserList from '../pages/users/UserList';
 import OrderList from '../pages/orders/OrderList';
@@ -19,6 +20,7 @@ import Settings from '../pages/settings/Settings';
 import ProductReviewsList from '../pages/merchants/ProductReviewsList';
 import ContactsList from '../pages/contacts/ContactsList';
 import KuralList from '../pages/kural/KuralList';
+import HealthGoalList from '../pages/goals/HealthGoalList';
 import SeasonalBanners from '../pages/banners/SeasonalBanners';
 import Login from '../pages/auth/Login';
 
@@ -63,6 +65,7 @@ const AppRoutes = () => {
                 <Route path="merchants/reviews" element={<ProductReviewsList />} />
                 <Route path="merchants/create" element={<MerchantCreate />} />
                 <Route path="merchants/:id" element={<MerchantDetail />} />
+                <Route path="merchant-stocks/:id" element={<MerchantProducts />} />
                 <Route path="products/:id" element={<ProductDetail />} />
                 <Route path="giftcards/:id" element={<GiftCardDetail />} />
 
@@ -74,6 +77,7 @@ const AppRoutes = () => {
                 <Route path="reports" element={<ReportList />} />
                 <Route path="reviews" element={<ReviewList />} />
                 <Route path="kural" element={<KuralList />} />
+                <Route path="health-goals" element={<HealthGoalList />} />
                 <Route path="banners/seasonal" element={<SeasonalBanners />} />
                 <Route path="contacts" element={<ContactsList />} />
                 <Route path="settings" element={<Settings />} />

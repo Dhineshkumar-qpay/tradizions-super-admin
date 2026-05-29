@@ -197,59 +197,82 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden select-none animate-in fade-in duration-350">
-      {/* Background Decorative Blobs */}
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+    <div className="min-h-screen flex font-sans bg-gray-50 select-none">
+      {/* Left Side - Hero / Branding (Hidden on mobile) */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gray-900 justify-center items-center">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#556B2F] via-[#2F3E18] to-gray-950 z-0"></div>
+        {/* Decorative Blobs */}
+        <div className="absolute top-[-15%] left-[-15%] w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full z-0 pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#FF8C00]/20 blur-[100px] rounded-full z-0 pointer-events-none"></div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4 sm:px-0">
-        <div className="bg-white py-10 px-6 sm:px-10 rounded-2xl shadow-soft border border-border/80 backdrop-blur-md relative overflow-hidden animate-in fade-in">
-          <img
-            src="/src/assets/app-logo.png"
-            alt="Tradizions Logo"
-            className="h-14 w-auto object-contain"
-            onError={(e) => {
-              e.target.style.display = "none";
-              e.target.parentNode.innerHTML = `<span class="text-2xl font-bold text-primary tracking-wider">Tradizions</span>`;
-            }}
-          />
-          {/* Top colored accent line */}
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-accent to-primary" />
-          <div style={{ height: "20px" }}></div>
+        <div className="relative z-10 p-12 text-center text-white max-w-xl animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <div className="mb-8 flex justify-center">
+            <div className="w-40 h-20 bg-white backdrop-blur-xl rounded-xl border border-white/20 flex items-center justify-center shadow-2xl">
+              <img src="src/assets/app-logo.png" alt="app-logo" />
+            </div>
+          </div>
+          <h1 className="text-4xl lg:text-5xl font-black mb-6 tracking-tight leading-tight">
+            Tradizions <br /> Master Admin
+          </h1>
+          <p className="text-lg text-white/70 font-medium leading-relaxed max-w-md mx-auto">
+            Securely manage your entire business operations, merchants, analytics, and orders from one unified platform.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className="flex-1 flex flex-col justify-center py-12 px-6 sm:px-12 lg:px-20 xl:px-32 relative bg-white shadow-[-20px_0_40px_rgba(0,0,0,0.05)] z-10 lg:rounded-l-[2.5rem] lg:-ml-6">
+
+        {/* Mobile Background Elements */}
+        <div className="lg:hidden absolute top-[-20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+        <div className="lg:hidden absolute bottom-[-20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+
+        <div className="w-full max-w-sm mx-auto relative z-10">
+
+          {/* Mobile Logo (Visible only on mobile/tablet) */}
+          <div className="lg:hidden flex justify-center mb-10">
+            <img
+              src="/src/assets/app-logo.png"
+              alt="Tradizions Logo"
+              className="h-16 w-auto object-contain"
+              onError={(e) => {
+                e.target.style.display = "none";
+                e.target.parentNode.innerHTML = `<span class="text-3xl font-black text-primary tracking-tight">Tradizions</span>`;
+              }}
+            />
+          </div>
+
+          <div className="mb-8 text-center lg:text-left">
+            <h2 className="text-3xl font-black text-gray-900 tracking-tight mb-2">
+              {step === "phone" ? "Welcome back" : "Verify account"}
+            </h2>
+            <p className="text-sm font-medium text-gray-500">
+              {step === "phone"
+                ? "Enter your mobile number to securely sign in to your dashboard."
+                : <span>We've sent a code to <b className="text-gray-900">+91 {phone}</b></span>}
+            </p>
+          </div>
+
           {step === "phone" ? (
-            <div className="animate-in fade-in duration-300 space-y-6">
-              <div>
-                <h3 className="text-xl font-bold text-gray-950">
-                  Welcome back
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  Enter your registered mobile number to receive a secure login
-                  OTP.
-                </p>
-              </div>
-
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <form onSubmit={handlePhoneSubmit} className="space-y-6">
                 <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-semibold text-gray-700"
-                    >
+                  <div className="flex justify-between items-center mb-2 px-1">
+                    <label htmlFor="phone" className="block text-[13px] font-bold text-gray-700 uppercase tracking-wider">
                       Mobile Number
                     </label>
                     {phone.length > 0 && (
-                      <span
-                        className={`text-[10px] font-bold uppercase tracking-wider ${phone.length === 10 ? "text-primary" : "text-gray-400"}`}
-                      >
-                        {phone.length} / 10 digits
+                      <span className={`text-[11px] font-bold uppercase tracking-wider ${phone.length === 10 ? "text-primary" : "text-gray-400"}`}>
+                        {phone.length} / 10
                       </span>
                     )}
                   </div>
-                  <div className="relative rounded-lg shadow-sm">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-gray-400" />
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Phone className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors duration-300" />
                     </div>
-                    <span className="absolute inset-y-0 left-10 pl-1 flex items-center pointer-events-none text-gray-400 text-sm font-medium">
+                    <span className="absolute inset-y-0 left-11 pl-1 flex items-center pointer-events-none text-gray-500 font-bold">
                       +91
                     </span>
                     <input
@@ -263,74 +286,41 @@ const Login = () => {
                         const val = e.target.value.replace(/\D/g, "");
                         if (val.length <= 10) setPhone(val);
                       }}
-                      className="w-full pl-20 pr-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/15 focus:border-primary transition-all duration-200 text-base placeholder-gray-400 tracking-wide font-medium"
+                      className="w-full pl-[4.5rem] pr-4 py-3.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white transition-all duration-300 text-lg font-bold text-gray-900 placeholder-gray-400"
                       placeholder="9876543210"
                       disabled={isLoading}
                     />
                   </div>
                 </div>
 
-                <div>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full btn-primary py-3.5 text-base rounded-xl font-semibold shadow-md shadow-primary/10 hover:shadow-lg active:scale-[0.98] transition-all duration-200 disabled:opacity-50 cursor-pointer"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                        Sending Secure OTP...
-                      </>
-                    ) : (
-                      <>
-                        Send OTP
-                        <ArrowRight className="h-5 w-5 ml-1" />
-                      </>
-                    )}
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-[#556B2F] hover:bg-[#3d4d22] text-white py-4 rounded-xl font-bold shadow-lg shadow-[#556B2F]/20 hover:shadow-xl hover:shadow-[#556B2F]/30 active:scale-[0.98] transition-all duration-300 disabled:opacity-70 flex items-center justify-center cursor-pointer"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                      Sending OTP...
+                    </>
+                  ) : (
+                    <>
+                      Continue securely
+                      <ArrowRight className="h-5 w-5 ml-2" />
+                    </>
+                  )}
+                </button>
               </form>
             </div>
           ) : (
-            <div className="animate-in fade-in duration-300 space-y-6">
-              <button
-                type="button"
-                onClick={() => setStep("phone")}
-                className="inline-flex items-center text-sm font-semibold text-primary hover:text-primary-dark transition-colors mb-2 cursor-pointer group"
-                disabled={isLoading}
-              >
-                <ChevronLeft className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
-                Change Mobile Number
-              </button>
-
-              <div className="mb-6">
-                <div className="flex items-center gap-2">
-                  <KeyRound className="h-5 w-5 text-accent animate-pulse" />
-                  <h3 className="text-xl font-bold text-gray-950">
-                    Verification Required
-                  </h3>
-                </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  We've sent a 6-digit verification code to{" "}
-                  <span className="font-bold text-gray-800">+91 {phone}</span>.
-                  Please enter it below.
-                </p>
-              </div>
-
+            <div className="animate-in fade-in slide-in-from-right-8 duration-500">
               <form onSubmit={handleOtpVerify} className="space-y-6">
                 <div>
-                  <div className="flex justify-between items-center mb-3">
-                    <label className="block text-sm font-semibold text-gray-700">
-                      6-Digit Security Code
-                    </label>
-                    <span
-                      className={`text-[10px] font-bold uppercase tracking-wider ${otp.join("").length === 6 ? "text-accent" : "text-gray-400"}`}
-                    >
-                      {otp.join("").length} / 6 digits
-                    </span>
-                  </div>
+                  <label className="block text-[13px] font-bold text-gray-700 uppercase tracking-wider mb-3 px-1 text-center lg:text-left">
+                    6-Digit Security Code
+                  </label>
                   <div
-                    className="flex justify-between gap-2 sm:gap-3"
+                    className="flex justify-between gap-2"
                     onPaste={handlePaste}
                   >
                     {otp.map((digit, index) => (
@@ -344,51 +334,57 @@ const Login = () => {
                         value={digit}
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
-                        className="w-12 h-12 sm:w-14 sm:h-14 text-center text-xl font-bold border border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50 focus:bg-white"
+                        className="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-black text-gray-900 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 bg-gray-50 focus:bg-white"
                         disabled={isLoading}
                       />
                     ))}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">
-                    Didn't receive the code?
-                  </span>
-                  {timer > 0 ? (
-                    <span className="text-gray-400 font-medium">
-                      Resend in{" "}
-                      <span className="font-bold text-primary">{timer}s</span>
-                    </span>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-[#556B2F] hover:bg-[#3d4d22] text-white py-4 rounded-xl font-bold shadow-lg shadow-[#556B2F]/20 hover:shadow-xl hover:shadow-[#556B2F]/30 active:scale-[0.98] transition-all duration-300 disabled:opacity-70 flex items-center justify-center cursor-pointer mt-8"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                      Verifying...
+                    </>
                   ) : (
-                    <button
-                      type="button"
-                      onClick={handleResendOtp}
-                      disabled={isLoading || !canResend}
-                      className="text-primary font-bold hover:text-primary-dark transition-colors cursor-pointer disabled:opacity-50"
-                    >
-                      Resend Code
-                    </button>
+                    <>
+                      <ShieldCheck className="h-5 w-5 mr-2" />
+                      Verify & Access Dashboard
+                    </>
                   )}
-                </div>
+                </button>
 
-                <div>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full btn-primary py-3.5 text-base rounded-xl font-semibold shadow-md shadow-primary/10 hover:shadow-lg active:scale-[0.98] transition-all duration-200 disabled:opacity-50 cursor-pointer"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                        Verifying...
-                      </>
+                <div className="flex flex-col items-center justify-center gap-3 pt-6 border-t border-gray-100">
+                  <div className="flex items-center justify-center text-sm font-medium">
+                    <span className="text-gray-500 mr-2">Didn't receive code?</span>
+                    {timer > 0 ? (
+                      <span className="text-gray-400">
+                        Resend in <span className="font-bold text-[#556B2F]">{timer}s</span>
+                      </span>
                     ) : (
-                      <>
-                        <ShieldCheck className="h-5 w-5 mr-1.5" />
-                        Verify & Login
-                      </>
+                      <button
+                        type="button"
+                        onClick={handleResendOtp}
+                        disabled={isLoading || !canResend}
+                        className="text-[#556B2F] font-bold hover:text-[#3d4d22] transition-colors cursor-pointer"
+                      >
+                        Resend OTP
+                      </button>
                     )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setStep("phone")}
+                    className="inline-flex items-center text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors cursor-pointer group"
+                    disabled={isLoading}
+                  >
+                    <ChevronLeft className="h-4 w-4 mr-1 group-hover:-translate-x-1 transition-transform" />
+                    Change Mobile Number
                   </button>
                 </div>
               </form>

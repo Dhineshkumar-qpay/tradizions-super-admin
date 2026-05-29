@@ -37,7 +37,8 @@ const GiftCardDetail = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const IMAGE_BASE = process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003";
+  const IMAGE_BASE =
+    process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003";
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -87,18 +88,30 @@ const GiftCardDetail = () => {
     return (
       <div className="py-20 text-center space-y-3">
         <AlertTriangle className="w-12 h-12 text-rose-500 mx-auto" />
-        <p className="text-gray-600 font-bold text-base">Gift Pack not found.</p>
-        <Button onClick={() => navigate(-1)} variant="outline" className="text-xs">
+        <p className="text-gray-600 font-bold text-base">
+          Gift Pack not found.
+        </p>
+        <Button
+          onClick={() => navigate(-1)}
+          variant="outline"
+          className="text-xs"
+        >
           Go Back
         </Button>
       </div>
     );
   }
 
-  const displayImages = [g.giftimage, g.image1, g.image2, g.image3, g.image4].filter(
-    Boolean,
-  );
-  const currentDisplayImg = selectedImage ? `${IMAGE_BASE}${selectedImage}` : "https://picsum.photos/600";
+  const displayImages = [
+    g.giftimage,
+    g.image1,
+    g.image2,
+    g.image3,
+    g.image4,
+  ].filter(Boolean);
+  const currentDisplayImg = selectedImage
+    ? `${IMAGE_BASE}${selectedImage}`
+    : "https://picsum.photos/600";
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500 pb-12">
@@ -110,7 +123,7 @@ const GiftCardDetail = () => {
         >
           <ArrowLeft className="w-4 h-4" /> Back to Gifts
         </button>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <Button
             variant="outline"
             className="h-9 text-xs rounded-lg font-bold"
@@ -125,7 +138,7 @@ const GiftCardDetail = () => {
           >
             <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit Hamper
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Main Content Layout */}
@@ -144,11 +157,17 @@ const GiftCardDetail = () => {
                 }}
               />
               <div className="absolute top-3 left-3 flex flex-col gap-1">
-                <Badge variant="accent" className="text-[10px] font-bold px-2 py-0.5 shadow-xs">
+                <Badge
+                  variant="accent"
+                  className="text-[10px] font-bold px-2 py-0.5 shadow-xs"
+                >
                   Hamper Pack
                 </Badge>
                 {g.categoryname && (
-                  <Badge variant="warning" className="text-[10px] font-bold px-2 py-0.5 shadow-xs">
+                  <Badge
+                    variant="warning"
+                    className="text-[10px] font-bold px-2 py-0.5 shadow-xs"
+                  >
                     {g.categoryname}
                   </Badge>
                 )}
@@ -186,7 +205,10 @@ const GiftCardDetail = () => {
               <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 <Gift className="w-4 h-4 text-primary" /> SKU: GIFT-00{g.giftid}
               </div>
-              <Badge variant="success" className="text-xs font-bold px-2.5 py-1 rounded-md">
+              <Badge
+                variant="success"
+                className="text-xs font-bold px-2.5 py-1 rounded-md"
+              >
                 Hamper Collection
               </Badge>
             </div>
@@ -196,7 +218,9 @@ const GiftCardDetail = () => {
                 {g.giftname}
               </h1>
               <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mt-1 flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5 text-accent" /> {g.categoryname || "Category"} &bull; {g.subcategoryname || "Subcategory"}
+                <Layers className="w-3.5 h-3.5 text-accent" />{" "}
+                {g.categoryname || "Category"} &bull;{" "}
+                {g.subcategoryname || "Subcategory"}
               </p>
             </div>
 
@@ -210,62 +234,22 @@ const GiftCardDetail = () => {
                   <span className="text-2xl font-black text-primary">
                     ₹{g.giftsellingprice > 0 ? g.giftsellingprice : g.giftprice}
                   </span>
-                  {g.giftsellingprice > 0 && g.giftsellingprice < g.giftprice && (
-                    <span className="text-sm font-semibold text-gray-400 line-through">
-                      ₹{g.giftprice}
-                    </span>
-                  )}
+                  {g.giftsellingprice > 0 &&
+                    g.giftsellingprice < g.giftprice && (
+                      <span className="text-sm font-semibold text-gray-400 line-through">
+                        ₹{g.giftprice}
+                      </span>
+                    )}
                 </div>
               </div>
               {g.discount > 0 && (
-                <Badge variant="accent" className="font-bold text-xs px-3 py-1 shadow-xs">
+                <Badge
+                  variant="accent"
+                  className="font-bold text-xs px-3 py-1 shadow-xs"
+                >
                   {g.discount}% OFF
                 </Badge>
               )}
-            </div>
-
-            {/* Inventory & Status Controls */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              <div className="bg-gray-50 p-3.5 rounded-lg border border-border flex items-center justify-between">
-                <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Status</span>
-                <div className="inline-flex bg-white border border-border p-0.5 rounded-md">
-                  <button
-                    onClick={() => setIsActive(true)}
-                    className={`px-2.5 py-1 text-[10px] font-bold rounded cursor-pointer ${
-                      isActive ? "bg-primary text-white shadow-2xs" : "text-gray-500 hover:text-gray-900"
-                    }`}
-                  >
-                    Active
-                  </button>
-                  <button
-                    onClick={() => setIsActive(false)}
-                    className={`px-2.5 py-1 text-[10px] font-bold rounded cursor-pointer ${
-                      !isActive ? "bg-rose-600 text-white shadow-2xs" : "text-gray-500 hover:text-rose-600"
-                    }`}
-                  >
-                    Inactive
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 p-3.5 rounded-lg border border-border flex items-center justify-between">
-                <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Inventory</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setQty((prev) => Math.max(0, prev - 1))}
-                    className="w-6 h-6 rounded bg-white border border-border hover:bg-gray-100 text-gray-700 font-bold text-xs flex items-center justify-center cursor-pointer select-none"
-                  >
-                    -
-                  </button>
-                  <span className="text-xs font-bold text-gray-800 w-6 text-center">{qty}</span>
-                  <button
-                    onClick={() => setQty((prev) => prev + 1)}
-                    className="w-6 h-6 rounded bg-white border border-border hover:bg-gray-100 text-gray-700 font-bold text-xs flex items-center justify-center cursor-pointer select-none"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -328,7 +312,9 @@ const GiftCardDetail = () => {
                           key={i}
                           className="p-3 bg-gray-50 rounded-lg border border-border flex items-center justify-between"
                         >
-                          <span className="text-xs font-semibold text-gray-800">{p.name}</span>
+                          <span className="text-xs font-semibold text-gray-800">
+                            {p.name}
+                          </span>
                           <CheckCircle className="w-4 h-4 text-emerald-500" />
                         </div>
                       ))
@@ -350,15 +336,23 @@ const GiftCardDetail = () => {
                     <div className="bg-gray-50 border border-border p-3.5 rounded-lg flex items-center gap-3">
                       <Box className="w-6 h-6 text-primary" />
                       <div>
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Box Type</span>
-                        <span className="text-xs font-bold text-gray-800 block mt-0.5">{g.packingtype || "Premium Traditional Box"}</span>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                          Box Type
+                        </span>
+                        <span className="text-xs font-bold text-gray-800 block mt-0.5">
+                          {g.packingtype || "Premium Traditional Box"}
+                        </span>
                       </div>
                     </div>
                     <div className="bg-gray-50 border border-border p-3.5 rounded-lg flex items-center gap-3">
                       <ShieldCheck className="w-6 h-6 text-primary" />
                       <div>
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Classification</span>
-                        <span className="text-xs font-bold text-gray-800 block mt-0.5">{g.categoryname || "Nuts Gift Packs"}</span>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                          Classification
+                        </span>
+                        <span className="text-xs font-bold text-gray-800 block mt-0.5">
+                          {g.categoryname || "Nuts Gift Packs"}
+                        </span>
                       </div>
                     </div>
                   </div>

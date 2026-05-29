@@ -106,7 +106,7 @@ const ProductDetail = () => {
         >
           <ArrowLeft className="w-4 h-4" /> Back to Products
         </button>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <Button
             variant="outline"
             className="h-9 text-xs rounded-lg font-bold"
@@ -121,7 +121,7 @@ const ProductDetail = () => {
           >
             <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit Product
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Main Content Layout */}
