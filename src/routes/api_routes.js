@@ -3,6 +3,7 @@ export const APIROUTES = {
   VERIFYOTP: "/admin/verify-otp",
   GETALLUSERS: "/admin/getallusers",
   ADDBUSINESS: "/business/addbusiness",
+  EDITBUSINESS: "/business/editbusiness",
   GETKURALS: "/kural/get-kural",
   ACTIVEBUSINESS: "/business/active-business",
   GETBUSINESS: "/admin/businesses",
@@ -35,4 +36,5 @@ export const APIROUTES = {
   ADDHEALTHGOAL: "/goal/addhealth-goal",
   DELETEHEALTHGOAL: "/goal/delete-goal",
   GETHEALTHGOALS: "/goal/gethealth-goals",
+  ALLMENUS: "/menu/all-menu",
 };

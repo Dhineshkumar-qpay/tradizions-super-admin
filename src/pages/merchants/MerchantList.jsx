@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TablePagination from "../../components/ui/TablePagination";
 import Card, { CardHeader } from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
-import { Search, Filter, Plus, Eye, Trash2, Loader2 } from "lucide-react";
+import { Search, Filter, Plus, Eye, Edit, Trash2, Loader2 } from "lucide-react";
 import { API } from "../../services/api_service";
 import { APIROUTES } from "../../routes/api_routes";
 import { toast } from "react-toastify";
@@ -38,7 +38,7 @@ const MerchantList = ({ type }) => {
   }, []);
 
   // Handle Active/Inactive status toggle via ACTIVEBUSINESS API
-  const handleStatusToggle = async (bid, currentStatus) => {
+  const handleStatusToggle = async (bid, userid, currentStatus) => {
     const toggledStatus = currentStatus === "active" ? "inactive" : "active";
 
     // Optimistic state update for fluid UI experience
@@ -50,6 +50,7 @@ const MerchantList = ({ type }) => {
       const response = await API.post(APIROUTES.ACTIVEBUSINESS, {
         bid,
         status: toggledStatus,
+        userid: userid
       });
 
       if (response.data && response.data.statusCode === 200) {
@@ -220,28 +221,25 @@ const MerchantList = ({ type }) => {
                         <div className="flex items-center gap-2.5">
                           <button
                             onClick={() =>
-                              handleStatusToggle(merchant.bid, merchant.status)
+                              handleStatusToggle(merchant.bid, merchant.userid, merchant.status)
                             }
-                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                              merchant.status === "active"
-                                ? "bg-primary"
-                                : "bg-gray-200"
-                            }`}
+                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${merchant.status === "active"
+                              ? "bg-primary"
+                              : "bg-gray-200"
+                              }`}
                           >
                             <span
-                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                                merchant.status === "active"
-                                  ? "translate-x-5"
-                                  : "translate-x-0"
-                              }`}
+                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${merchant.status === "active"
+                                ? "translate-x-5"
+                                : "translate-x-0"
+                                }`}
                             />
                           </button>
                           <span
-                            className={`text-xs font-bold uppercase tracking-wider ${
-                              merchant.status === "active"
-                                ? "text-primary"
-                                : "text-gray-400"
-                            }`}
+                            className={`text-xs font-bold uppercase tracking-wider ${merchant.status === "active"
+                              ? "text-primary"
+                              : "text-gray-400"
+                              }`}
                           >
                             {merchant.status === "active"
                               ? "Active"
@@ -261,6 +259,14 @@ const MerchantList = ({ type }) => {
                             }
                           >
                             <Eye className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            className="w-7 h-7 rounded-[10px] text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all flex items-center justify-center cursor-pointer"
+                            onClick={() =>
+                              navigate(`/merchants/edit/${merchant.bid}`, { state: { merchant } })
+                            }
+                          >
+                            <Edit className="w-3.5 h-3.5" />
                           </button>
                           <button
                             className="w-7 h-7 rounded-[10px] text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all flex items-center justify-center cursor-pointer"

@@ -80,7 +80,7 @@ const SubcategoryList = () => {
     const loadInitialData = async () => {
       setIsLoading(true);
       try {
-        const catRes = await API.post(APIROUTES.GETALLCATEGORIES);
+        const catRes = await API.post(APIROUTES.GETALLCATEGORIES,{type:"all"});
         if (catRes.data && catRes.data.statusCode === 200) {
           const fetchedCats = catRes.data.data || [];
           setCategories(fetchedCats);

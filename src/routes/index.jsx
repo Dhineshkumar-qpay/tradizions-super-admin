@@ -64,6 +64,7 @@ const AppRoutes = () => {
                 <Route path="merchants/master" element={<MerchantList type="master" />} />
                 <Route path="merchants/reviews" element={<ProductReviewsList />} />
                 <Route path="merchants/create" element={<MerchantCreate />} />
+                <Route path="merchants/edit/:id" element={<MerchantCreate />} />
                 <Route path="merchants/:id" element={<MerchantDetail />} />
                 <Route path="merchant-stocks/:id" element={<MerchantProducts />} />
                 <Route path="products/:id" element={<ProductDetail />} />

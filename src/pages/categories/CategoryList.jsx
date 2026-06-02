@@ -44,7 +44,7 @@ const CategoryList = () => {
   const fetchCategories = async () => {
     setIsLoading(true);
     try {
-      const response = await API.post(APIROUTES.GETALLCATEGORIES);
+      const response = await API.post(APIROUTES.GETALLCATEGORIES,{type:"all"});
       if (response.data && response.data.statusCode === 200) {
         setCategories(response.data.data || []);
       } else {

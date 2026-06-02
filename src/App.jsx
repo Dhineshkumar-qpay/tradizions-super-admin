@@ -8,7 +8,26 @@ function App() {
   return (
     <BrowserRouter>
       <AppRoutes />
-      <ToastContainer position="bottom-right" theme="colored" />
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={true}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{
+          borderRadius: "12px",
+          fontSize: "14px",
+          fontWeight: "500",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+        }}
+        bodyStyle={{
+          padding: "4px 0",
+        }}
+      />
     </BrowserRouter>
   );
 }
