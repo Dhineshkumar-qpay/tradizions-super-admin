@@ -4,6 +4,8 @@ export const APIROUTES = {
   GETALLUSERS: "/admin/getallusers",
   ADDBUSINESS: "/business/addbusiness",
   EDITBUSINESS: "/business/editbusiness",
+  ADDKURAL: "/kural/addthinamorukural",
+  UPDATEKURAL: "/kural/update-kural",
   GETKURALS: "/kural/get-kural",
   ACTIVEBUSINESS: "/business/active-business",
   GETBUSINESS: "/admin/businesses",
@@ -37,4 +39,9 @@ export const APIROUTES = {
   DELETEHEALTHGOAL: "/goal/delete-goal",
   GETHEALTHGOALS: "/goal/gethealth-goals",
   ALLMENUS: "/menu/all-menu",
+  ADDBANNER: "/banner/add-banner",
+  GETALLBANNER: "/banner/all-banners",
+  DELETEBANNER: "/banner/delete-banner",
+  UPDATEBANNERSTATUS: "/banner/update-banner-status",
+  UPDATEBANNER: "/banner/update-banner",
 };

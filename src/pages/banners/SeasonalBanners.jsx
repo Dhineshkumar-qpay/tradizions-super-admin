@@ -14,6 +14,8 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import { API } from "../../services/api_service";
+import { APIROUTES } from "../../routes/api_routes";
 
 const mockBanners = [
   {
@@ -37,10 +39,12 @@ const mockBanners = [
 ];
 
 const SeasonalBanners = () => {
-  const [banners, setBanners] = useState(mockBanners);
+  const [banners, setBanners] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [file, setFile] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -51,10 +55,30 @@ const SeasonalBanners = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  const fetchBanners = async () => {
+    setIsLoading(true);
+    try {
+      const response = await API.post(APIROUTES.GETALLBANNER);
+      if (response.data && response.data.statusCode === 200) {
+        setBanners(response.data.data || []);
+      } else {
+        toast.error("Failed to fetch banners");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchBanners();
+  }, []);
+
   const filteredBanners = banners.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.toLowerCase()),
+      (item.bannername && item.bannername.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
   const paginatedBanners = filteredBanners.slice(
@@ -63,17 +87,18 @@ const SeasonalBanners = () => {
   );
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, imagePreview: reader.result }));
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(selectedFile);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.description.trim()) {
       toast.error("Please provide both Banner Name and Description.");
@@ -81,72 +106,114 @@ const SeasonalBanners = () => {
     }
 
     if (editingId) {
-      setBanners(
-        banners.map((item) =>
-          item.id === editingId
-            ? {
-                ...item,
-                name: formData.name,
-                description: formData.description,
-                image: formData.imagePreview || item.image,
-              }
-            : item,
-        ),
-      );
-      toast.success("Seasonal Banner updated successfully!");
+      const formDataToSend = new FormData();
+      if (file) formDataToSend.append("bannerimage", file);
+      formDataToSend.append("bannername", formData.name);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("bannerid", editingId);
+
+      try {
+        const response = await API.post(APIROUTES.UPDATEBANNER, formDataToSend, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (response.data && response.data.statusCode === 200) {
+          toast.success("Seasonal Banner updated successfully!");
+          fetchBanners();
+        } else {
+          toast.error("Failed to update banner");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error updating banner");
+      }
     } else {
-      const newBanner = {
-        id: Date.now(),
-        image:
-          formData.imagePreview || "https://picsum.photos/seed/bannew/800/400",
-        name: formData.name,
-        description: formData.description,
-        status: "Active",
-        date: new Date().toISOString().split("T")[0],
-      };
-      setBanners([newBanner, ...banners]);
-      toast.success("Seasonal Banner created successfully!");
+      if (!file) {
+        toast.error("Please select a banner image.");
+        return;
+      }
+      const formDataToSend = new FormData();
+      formDataToSend.append("bannerimage", file);
+      formDataToSend.append("bannername", formData.name);
+      formDataToSend.append("description", formData.description);
+
+      try {
+        const response = await API.post(APIROUTES.ADDBANNER, formDataToSend, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (response.data && response.data.statusCode === 200) {
+          toast.success("Seasonal Banner created successfully!");
+          fetchBanners();
+        } else {
+          toast.error("Failed to add banner");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error adding banner");
+      }
     }
 
     setFormData({ name: "", description: "", imagePreview: null });
+    setFile(null);
     setIsAdding(false);
     setEditingId(null);
   };
 
   const handleEdit = (item) => {
     setFormData({
-      name: item.name,
+      name: item.bannername,
       description: item.description,
-      imagePreview: item.image,
+      imagePreview: item.bannerimage,
     });
-    setEditingId(item.id);
+    setEditingId(item.bannerid);
     setIsAdding(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (
       window.confirm("Are you sure you want to delete this seasonal banner?")
     ) {
-      setBanners(banners.filter((item) => item.id !== id));
-      toast.error("Banner removed successfully.");
+      try {
+        const response = await API.post(APIROUTES.DELETEBANNER, { bannerid: id });
+        if (response.data && response.data.statusCode === 200) {
+          toast.error("Banner removed successfully.");
+          fetchBanners();
+        } else {
+          toast.error("Failed to delete banner");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error deleting banner");
+      }
     }
   };
 
-  const toggleStatus = (id) => {
-    setBanners(
-      banners.map((b) =>
-        b.id === id
-          ? { ...b, status: b.status === "Active" ? "Inactive" : "Active" }
-          : b,
-      ),
-    );
-    toast.success("Banner visibility status updated");
+  const toggleStatus = async (id) => {
+    const banner = banners.find((b) => b.bannerid === id);
+    if (!banner) return;
+    const newStatus = banner.status === "Active" || banner.status === "active" ? "inactive" : "active";
+
+    try {
+      const response = await API.post(APIROUTES.UPDATEBANNERSTATUS, {
+        bannerid: id,
+        status: newStatus,
+      });
+      if (response.data && response.data.statusCode === 200) {
+        toast.success("Banner visibility status updated");
+        fetchBanners();
+      } else {
+        toast.error("Failed to update banner status");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error updating banner status");
+    }
   };
 
   const handleCancel = () => {
     setIsAdding(false);
     setEditingId(null);
     setFormData({ name: "", description: "", imagePreview: null });
+    setFile(null);
   };
 
   return (
@@ -323,9 +390,15 @@ const SeasonalBanners = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {paginatedBanners.map((item, index) => (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="5" className="px-4 py-8 text-center text-xs text-gray-500">
+                    Loading banners...
+                  </td>
+                </tr>
+              ) : paginatedBanners.map((item, index) => (
                 <tr
-                  key={item.id}
+                  key={item.bannerid}
                   className="hover:bg-gray-50/50 transition-colors group"
                 >
                   <td className="px-4 py-4 text-xs font-semibold text-gray-600 align-middle">
@@ -334,52 +407,47 @@ const SeasonalBanners = () => {
                   <td className="px-4 py-4 align-middle">
                     <div className="aspect-[2/1] w-28 rounded-lg overflow-hidden bg-gray-100 border border-border shadow-2xs">
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={process.env.NEXT_PUBLIC_IMAGE_URL + item.bannerimage}
+                        alt={item.bannername}
                         className="w-full h-full object-cover"
                       />
                     </div>
                   </td>
                   <td className="px-4 py-4 align-middle space-y-1">
                     <p className="font-bold text-sm text-gray-900 tracking-tight">
-                      {item.name}
+                      {item.bannername}
                     </p>
                     <p className="text-xs text-gray-500 font-medium leading-relaxed max-w-xl">
                       {item.description}
                     </p>
-                    <span className="text-[10px] font-bold text-gray-400 block pt-1">
-                      Created: {item.date}
-                    </span>
                   </td>
                   <td className="px-4 py-4 align-middle">
                     <Badge
-                      variant={item.status === "Active" ? "success" : "gray"}
+                      variant={item.status === "active" ? "success" : "red"}
                       className="font-bold text-[10px] py-0.5 px-2 rounded-md"
                     >
-                      {item.status}
+                      {item.status.charAt(0).toUpperCase() + item.status.slice(1) || "Inactive"}
                     </Badge>
                   </td>
                   <td className="px-4 py-4 text-right align-middle">
                     <div className="flex items-center justify-end gap-2">
                       <button
-                        onClick={() => toggleStatus(item.id)}
-                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                          item.status === "Active"
-                            ? "bg-primary"
-                            : "bg-gray-200"
-                        }`}
+                        onClick={() => toggleStatus(item.bannerid)}
+                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${item.status === "active" || !item.status
+                          ? "bg-primary"
+                          : "bg-gray-200"
+                          }`}
                         title={
-                          item.status === "Active"
+                          item.status === "active" || !item.status
                             ? "Deactivate Banner"
                             : "Activate Banner"
                         }
                       >
                         <span
-                          className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                            item.status === "Active"
-                              ? "translate-x-4"
-                              : "translate-x-0"
-                          }`}
+                          className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${item.status === "active" || !item.status
+                            ? "translate-x-4"
+                            : "translate-x-0"
+                            }`}
                         />
                       </button>
 
@@ -392,7 +460,7 @@ const SeasonalBanners = () => {
                       </button>
 
                       <button
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDelete(item.bannerid)}
                         className="w-7 h-7 rounded-[10px] text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all flex items-center justify-center cursor-pointer"
                         title="Delete Banner"
                       >

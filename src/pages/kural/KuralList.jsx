@@ -23,6 +23,7 @@ const KuralList = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({ kural: "", meaning: "" });
+  const [file, setFile] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -60,32 +61,56 @@ const KuralList = () => {
     currentPage * itemsPerPage,
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.kural.trim() || !formData.meaning.trim()) {
-      toast.error("Please fill in both Kural and Meaning fields.");
-      return;
-    }
 
     if (editingId) {
-      setKurals(
-        kurals.map((item) =>
-          item.kuralid === editingId ? { ...item, ...formData } : item,
-        ),
-      );
-      toast.success("Thinam Oru Kural updated successfully!");
+      if (!formData.kural.trim() || !formData.meaning.trim()) {
+        toast.error("Please fill in both Kural and Meaning fields.");
+        return;
+      }
+      try {
+        const response = await API.post(APIROUTES.UPDATEKURAL, {
+          kuralid: editingId,
+          kural: formData.kural,
+          meaning: formData.meaning,
+        });
+        if (response.data && response.data.statusCode === 200) {
+          toast.success("Thinam Oru Kural updated successfully!");
+          fetchKurals();
+        } else {
+          toast.error(response.data?.message || "Failed to update Kural");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error updating Kural");
+      }
     } else {
-      const newKural = {
-        kuralid: Date.now(),
-        kural: formData.kural,
-        meaning: formData.meaning,
-        createdAt: new Date().toISOString(),
-      };
-      setKurals([newKural, ...kurals]);
-      toast.success("Thinam Oru Kural added successfully!");
+      if (!file) {
+        toast.error("Please select a JSON file to upload.");
+        return;
+      }
+      const formDataToSend = new FormData();
+      formDataToSend.append("kurals", file);
+
+      try {
+        const response = await API.post(APIROUTES.ADDKURAL, formDataToSend, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (response.data && response.data.statusCode === 200) {
+          toast.success("Thinam Oru Kural added successfully!");
+          fetchKurals();
+        } else {
+          toast.error(response.data?.message || "Failed to add Kurals");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error adding Kurals");
+      }
     }
 
     setFormData({ kural: "", meaning: "" });
+    setFile(null);
     setIsAdding(false);
     setEditingId(null);
   };
@@ -107,6 +132,7 @@ const KuralList = () => {
     setIsAdding(false);
     setEditingId(null);
     setFormData({ kural: "", meaning: "" });
+    setFile(null);
   };
 
   return (
@@ -140,36 +166,55 @@ const KuralList = () => {
           <CardContent className="p-4">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-600 uppercase">
-                    Kural Verse (குறள்)
-                  </label>
-                  <textarea
-                    required
-                    rows={3}
-                    value={formData.kural}
-                    onChange={(e) =>
-                      setFormData({ ...formData, kural: e.target.value })
-                    }
-                    className="w-full px-3 py-2 text-xs bg-white border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium leading-relaxed"
-                    placeholder="Enter 2-line Thirukkural verse..."
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-600 uppercase">
-                    Meaning (விளக்கம்)
-                  </label>
-                  <textarea
-                    required
-                    rows={3}
-                    value={formData.meaning}
-                    onChange={(e) =>
-                      setFormData({ ...formData, meaning: e.target.value })
-                    }
-                    className="w-full px-3 py-2 text-xs bg-white border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium leading-relaxed"
-                    placeholder="Enter Kural explanation / meaning..."
-                  />
-                </div>
+                {editingId ? (
+                  <>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-gray-600 uppercase">
+                        Kural Verse (குறள்)
+                      </label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.kural}
+                        onChange={(e) =>
+                          setFormData({ ...formData, kural: e.target.value })
+                        }
+                        className="w-full px-3 py-2 text-xs bg-white border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium leading-relaxed"
+                        placeholder="Enter 2-line Thirukkural verse..."
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-gray-600 uppercase">
+                        Meaning (விளக்கம்)
+                      </label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.meaning}
+                        onChange={(e) =>
+                          setFormData({ ...formData, meaning: e.target.value })
+                        }
+                        className="w-full px-3 py-2 text-xs bg-white border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium leading-relaxed"
+                        placeholder="Enter Kural explanation / meaning..."
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="space-y-1 md:col-span-2">
+                    <label className="text-[10px] font-bold text-gray-600 uppercase">
+                      Upload Kurals JSON
+                    </label>
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={(e) => setFile(e.target.files[0])}
+                      className="w-full px-3 py-2 text-xs bg-white border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    />
+                    <p className="text-[10px] text-gray-400 mt-1">
+                      Only .json files are allowed.
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="flex justify-end gap-2 pt-3 border-t border-gray-50">
                 <Button
