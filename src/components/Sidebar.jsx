@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import AppLogo from "../assets/app-logo.png";
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -184,7 +185,7 @@ const Sidebar = ({ onClose }) => {
     <div className="w-64 bg-gradient-to-b from-primary to-primary-dark text-white h-screen flex flex-col shadow-2xl border-r border-white/5 relative z-50">
       <div className="p-2 h-25 flex items-center gap-4 border-b border-white/10 relative overflow-hidden bg-gradient-to-b from-primary to-primary-dark">
         <img
-          src="/src/assets/app-logo.png"
+          src={AppLogo}
           alt="app-logo"
           height={40}
           className="p-5"

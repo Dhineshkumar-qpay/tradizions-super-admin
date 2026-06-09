@@ -11,6 +11,7 @@ import {
 import { API } from "../../services/api_service";
 import { APIROUTES } from "../../routes/api_routes";
 import { toast } from "react-toastify";
+import AppLogo from "../../assets/app-logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -209,7 +210,7 @@ const Login = () => {
         <div className="relative z-10 p-12 text-center text-white max-w-xl animate-in fade-in slide-in-from-bottom-8 duration-700">
           <div className="mb-8 flex justify-center">
             <div className="w-40 h-20 bg-white backdrop-blur-xl rounded-xl border border-white/20 flex items-center justify-center shadow-2xl">
-              <img src="src/assets/app-logo.png" alt="app-logo" />
+              <img src={AppLogo} alt="app-logo" />
             </div>
           </div>
           <h1 className="text-4xl lg:text-5xl font-black mb-6 tracking-tight leading-tight">
@@ -233,7 +234,7 @@ const Login = () => {
           {/* Mobile Logo (Visible only on mobile/tablet) */}
           <div className="lg:hidden flex justify-center mb-10">
             <img
-              src="/src/assets/app-logo.png"
+              src={AppLogo}
               alt="Tradizions Logo"
               className="h-16 w-auto object-contain"
               onError={(e) => {
