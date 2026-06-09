@@ -4,7 +4,7 @@ import { ArrowLeft, Loader2, Package, Edit, ChevronLeft, ChevronRight } from "lu
 import Card, { CardContent } from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 import { toast } from "react-toastify";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
@@ -197,7 +197,7 @@ const MerchantProducts = () => {
                       <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-100 ring-1 ring-gray-200">
                         {item.productimage ? (
                           <img
-                            src={process.env.NEXT_PUBLIC_API_URL?.replace("/api", "") + item.productimage || item.productimage}
+                            src={IMAGE_URL + item.productimage}
                             alt={item.productname}
                             className="w-full h-full object-cover"
                           />

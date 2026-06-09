@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 
 const mockBanners = [
   {
@@ -407,7 +407,7 @@ const SeasonalBanners = () => {
                   <td className="px-4 py-4 align-middle">
                     <div className="aspect-[2/1] w-28 rounded-lg overflow-hidden bg-gray-100 border border-border shadow-2xs">
                       <img
-                        src={process.env.NEXT_PUBLIC_IMAGE_URL + item.bannerimage}
+                        src={IMAGE_URL + item.bannerimage}
                         alt={item.bannername}
                         className="w-full h-full object-cover"
                       />

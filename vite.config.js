@@ -11,8 +11,8 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
     ],
     define: {
-      'process.env.NEXT_PUBLIC_API_URL': JSON.stringify(env.NEXT_PUBLIC_API_URL || "http://localhost:3003/api"),
-      'process.env.NEXT_PUBLIC_IMAGE_URL': JSON.stringify(env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003")
+      'process.env.NEXT_PUBLIC_API_URL': JSON.stringify(env.NEXT_PUBLIC_API_URL || "https://demo.sevanta.in/api"),
+      'process.env.NEXT_PUBLIC_IMAGE_URL': JSON.stringify(env.NEXT_PUBLIC_IMAGE_URL || "https://demo.sevanta.in/api")
     }
   }
 })

@@ -23,7 +23,7 @@ import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
 import { toast } from "react-toastify";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -33,7 +33,6 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const IMAGE_BASE = process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003";
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -90,7 +89,7 @@ const ProductDetail = () => {
   const displayImages = [p.productimage, p.image1, p.image2, p.image3, p.image4].filter(
     Boolean,
   );
-  const currentDisplayImg = selectedImage ? `${IMAGE_BASE}${selectedImage}` : "https://picsum.photos/600";
+  const currentDisplayImg = selectedImage ? `${IMAGE_URL}${selectedImage}` : "https://picsum.photos/600";
 
   const discountPercent = p.sellingprice > 0 && p.sellingprice < p.price
     ? Math.round(((p.price - p.sellingprice) / p.price) * 100)
@@ -164,7 +163,7 @@ const ProductDetail = () => {
                     }`}
                   >
                     <img
-                      src={`${IMAGE_BASE}${img}`}
+                      src={`${IMAGE_URL}${img}`}
                       alt=""
                       className="w-full h-full object-cover"
                     />

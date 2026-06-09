@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 
 const UserList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,9 +25,6 @@ const UserList = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const IMAGE_BASE =
-    process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003";
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -147,7 +144,7 @@ const UserList = () => {
                       <div className="flex items-center gap-3">
                         {user.profileimage ? (
                           <img
-                            src={`${IMAGE_BASE}${user.profileimage}`}
+                            src={`${IMAGE_URL}${user.profileimage}`}
                             alt={user.username || "User"}
                             className="w-8 h-8 rounded-[10px] object-cover border border-border shrink-0"
                             onError={(e) => {

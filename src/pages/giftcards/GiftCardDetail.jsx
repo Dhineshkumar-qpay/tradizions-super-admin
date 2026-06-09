@@ -25,7 +25,7 @@ import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
 import { toast } from "react-toastify";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 
 const GiftCardDetail = () => {
   const { id } = useParams();
@@ -36,9 +36,6 @@ const GiftCardDetail = () => {
   const [qty, setQty] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
-
-  const IMAGE_BASE =
-    process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003";
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -110,7 +107,7 @@ const GiftCardDetail = () => {
     g.image4,
   ].filter(Boolean);
   const currentDisplayImg = selectedImage
-    ? `${IMAGE_BASE}${selectedImage}`
+    ? `${IMAGE_URL}${selectedImage}`
     : "https://picsum.photos/600";
 
   return (
@@ -187,7 +184,7 @@ const GiftCardDetail = () => {
                     }`}
                   >
                     <img
-                      src={`${IMAGE_BASE}${img}`}
+                      src={`${IMAGE_URL}${img}`}
                       alt=""
                       className="w-full h-full object-cover"
                     />

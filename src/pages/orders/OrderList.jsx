@@ -19,7 +19,7 @@ import {
   Download,
 } from "lucide-react";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 import { toast } from "react-toastify";
 
 const OrderList = () => {
@@ -397,11 +397,7 @@ const OrderList = () => {
                             {firstItem?.productimage ? (
                               <img
                                 src={
-                                  process.env.NEXT_PUBLIC_API_URL?.replace(
-                                    "/api",
-                                    "",
-                                  ) + firstItem.productimage ||
-                                  firstItem.productimage
+                                  `${IMAGE_URL}${firstItem.productimage}`
                                 }
                                 alt=""
                                 className="w-full h-full object-cover"
@@ -510,8 +506,8 @@ const OrderList = () => {
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
                     className={`w-8 h-8 rounded-lg text-sm font-bold transition-colors ${currentPage === i + 1
-                        ? "bg-[#4C6B35] text-white"
-                        : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                      ? "bg-[#4C6B35] text-white"
+                      : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
                       }`}
                   >
                     {i + 1}

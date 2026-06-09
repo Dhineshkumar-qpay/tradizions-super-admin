@@ -26,7 +26,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 import { toast } from "react-toastify";
 
 const OrderDetail = () => {
@@ -104,9 +104,8 @@ const OrderDetail = () => {
 
   const getImageUrl = (path) => {
     if (!path) return "";
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL
-      ? process.env.NEXT_PUBLIC_API_URL.replace("/api", "")
-      : "";
+    const baseUrl = IMAGE_URL
+      ?? "";
     return baseUrl + path;
   };
 

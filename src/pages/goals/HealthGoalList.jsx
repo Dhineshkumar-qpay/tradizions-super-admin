@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 
 const HealthGoalList = () => {
   const [healthGoals, setHealthGoals] = useState([]);
@@ -133,7 +133,6 @@ const HealthGoalList = () => {
     }
   };
 
-  const SERVER_URL = process.env.NEXT_PUBLIC_IMAGE_URL; // Assuming typical VITE_API_URL setup
 
   // Helper to format image URL if needed
   const getImageUrl = (path) => {
@@ -141,7 +140,7 @@ const HealthGoalList = () => {
     if (path.startsWith("http")) return path;
     // Attempting to use a base URL or just the path if the server handles it relatively
     // If the image server base isn't available, we rely on the path from the server
-    return `${SERVER_URL}${path}`;
+    return `${IMAGE_URL}${path}`;
   };
 
   return (

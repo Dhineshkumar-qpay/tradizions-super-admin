@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3003/api",
+  baseURL: "https://demo.sevanta.in/api",
   headers: {
     "Content-Type": "application/json",
   },

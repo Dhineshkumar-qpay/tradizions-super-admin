@@ -20,7 +20,7 @@ import Card, { CardHeader, CardContent } from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 import { toast } from "react-toastify";
 import { clsx } from "clsx";
 
@@ -38,8 +38,6 @@ const MerchantDetail = () => {
   const [gifts, setGifts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const IMAGE_BASE =
-    process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003";
 
   useEffect(() => {
     const loadMerchantDetails = async () => {
@@ -267,7 +265,7 @@ const MerchantDetail = () => {
                     Business Cover Image
                   </span>
                   <img
-                    src={`${IMAGE_BASE}${businessInfo.businessimage}`}
+                    src={`${IMAGE_URL}${businessInfo.businessimage}`}
                     alt="Cover"
                     className="w-full max-w-lg h-56 object-cover rounded-2xl border border-border shadow-sm hover:shadow-md transition-shadow"
                   />
@@ -361,7 +359,7 @@ const MerchantDetail = () => {
                     Passbook / Statement Copy
                   </span>
                   <img
-                    src={`${IMAGE_BASE}${bankInfo.passbook}`}
+                    src={`${IMAGE_URL}${bankInfo.passbook}`}
                     alt="Passbook Document"
                     className="w-full max-w-lg h-56 object-cover rounded-2xl border border-border shadow-sm hover:shadow-md transition-shadow"
                   />
@@ -428,7 +426,7 @@ const MerchantDetail = () => {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
                               <img
-                                src={`${IMAGE_BASE}${product.productimage}`}
+                                src={`${IMAGE_URL}${product.productimage}`}
                                 alt=""
                                 className="w-10 h-10 rounded-lg object-cover border border-border"
                                 onError={(e) => {
@@ -524,7 +522,7 @@ const MerchantDetail = () => {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
                               <img
-                                src={`${IMAGE_BASE}${gc.giftimage}`}
+                                src={`${IMAGE_URL}${gc.giftimage}`}
                                 alt=""
                                 className="w-10 h-10 rounded-lg object-cover border border-border"
                                 onError={(e) => {

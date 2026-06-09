@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { API } from "../../services/api_service";
-import { APIROUTES } from "../../routes/api_routes";
+import { APIROUTES, IMAGE_URL } from "../../routes/api_routes";
 
 const CategoryList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,8 +38,6 @@ const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const IMAGE_BASE =
-    process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:3003";
 
   const fetchCategories = async () => {
     setIsLoading(true);
@@ -309,7 +307,7 @@ const CategoryList = () => {
                       <div className="flex items-center gap-3">
                         {cat.categoryimage ? (
                           <img
-                            src={`${IMAGE_BASE}${cat.categoryimage}`}
+                            src={`${IMAGE_URL}${cat.categoryimage}`}
                             alt={cat.categoryname}
                             className="w-8 h-8 rounded-[10px] object-cover border border-border shrink-0"
                             onError={(e) => {
@@ -432,7 +430,7 @@ const CategoryList = () => {
                 <div className="w-16 h-16 rounded-[16px] bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 overflow-hidden shrink-0">
                   {selectedCategory.categoryimage ? (
                     <img
-                      src={`${IMAGE_BASE}${selectedCategory.categoryimage}`}
+                      src={`${IMAGE_URL}${selectedCategory.categoryimage}`}
                       alt={selectedCategory.categoryname}
                       className="w-full h-full object-cover"
                       onError={(e) => {
