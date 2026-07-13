@@ -370,7 +370,8 @@ const OrderList = () => {
                   return (
                     <tr
                       key={order.orderid}
-                      className="hover:bg-gray-50/50 transition-colors group"
+                      onClick={() => navigate(`/orders/${order.orderid}`)}
+                      className="hover:bg-gray-50/50 transition-colors group cursor-pointer"
                     >
                       <td className="px-5 py-5 align-middle text-sm font-bold text-gray-500">
                         {sNo}

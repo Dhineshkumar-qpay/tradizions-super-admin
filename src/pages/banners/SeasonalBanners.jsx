@@ -175,7 +175,7 @@ const SeasonalBanners = () => {
       try {
         const response = await API.post(APIROUTES.DELETEBANNER, { bannerid: id });
         if (response.data && response.data.statusCode === 200) {
-          toast.error("Banner removed successfully.");
+          toast.success("Banner removed successfully.");
           fetchBanners();
         } else {
           toast.error("Failed to delete banner");

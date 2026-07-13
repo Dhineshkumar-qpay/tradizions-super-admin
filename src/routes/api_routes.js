@@ -47,3 +47,4 @@ export const APIROUTES = {
 };
 
 export const IMAGE_URL = "https://demo.sevanta.in/api";
+// export const IMAGE_URL = "http://localhost:3003";

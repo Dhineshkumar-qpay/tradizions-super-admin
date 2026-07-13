@@ -284,18 +284,70 @@ const OrderDetail = () => {
                   <div className="flex items-start gap-4 mt-2">
                     <div className="w-20 h-20 rounded-lg overflow-hidden border border-gray-200 bg-white flex-shrink-0 p-1">
                       <img
-                        src={getImageUrl(item.product?.productimage)}
-                        alt={item.product?.productname}
+                        src={getImageUrl(item.product?.productimage || item.giftpack?.giftpackimage || item.giftcard?.image)}
+                        alt={item.product?.productname || item.giftpack?.giftpackname || item.giftcard?.title || 'Item Image'}
                         className="w-full h-full object-cover rounded-md"
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="font-bold text-base text-gray-900 leading-snug">{item.product?.productname}</p>
+                      <p className="font-bold text-base text-gray-900 leading-snug">
+                        {item.product?.productname || item.giftpack?.giftpackname || item.giftcard?.title || 'Unknown Item'}
+                      </p>
                       <p className="text-sm font-semibold text-gray-500">Qty: {item.quantity}</p>
                       <p className="text-sm font-bold text-gray-900">₹{item.price?.toLocaleString(undefined, { minimumFractionDigits: 2 })} / each</p>
                       <p className="text-sm font-black text-[#4C6B35] pt-1">Total: ₹{item.totalprice?.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
 
+                      {item.giftmessage && (
+                        <div className="mt-3 p-3 bg-yellow-50 rounded-md border border-yellow-100">
+                          <p className="text-xs font-bold text-yellow-700 uppercase mb-1">Gift Message:</p>
+                          <p className="text-sm text-gray-800 italic">"{item.giftmessage}"</p>
+                        </div>
+                      )}
 
+                      {item.giftpackproducts && item.giftpackproducts.length > 0 && (
+                        <div className="mt-4 space-y-3">
+                          <p className="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 pb-1">Items Included (Per Pack):</p>
+                          <div className="space-y-2">
+                            {item.giftpack && (
+                              <div className="flex items-center gap-3 bg-gray-50/50 p-2 rounded-md border border-gray-100">
+                                <div className="w-10 h-10 rounded overflow-hidden border border-gray-200 bg-white flex-shrink-0">
+                                  <img 
+                                    src={getImageUrl(item.giftpack.giftpackimage)} 
+                                    alt={item.giftpack.giftpackname} 
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-sm font-semibold text-gray-900 leading-tight">{item.giftpack.giftpackname} (Box)</p>
+                                  <div className="flex items-center justify-between mt-1">
+                                    <span className="text-xs font-medium text-gray-500">Qty: 1</span>
+                                    <span className="text-xs font-bold text-[#4C6B35]">₹{item.giftpack.giftpackprice?.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {item.giftpackproducts.map((gp, idx) => (
+                              <div key={idx} className="flex items-center gap-3 bg-gray-50/50 p-2 rounded-md border border-gray-100">
+                                <div className="w-10 h-10 rounded overflow-hidden border border-gray-200 bg-white flex-shrink-0">
+                                  <img 
+                                    src={getImageUrl(gp.productimage)} 
+                                    alt={gp.productname} 
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-sm font-semibold text-gray-900 leading-tight">{gp.productname}</p>
+                                  <div className="flex items-center justify-between mt-1">
+                                    <span className="text-xs font-medium text-gray-500">Qty: {gp.quantity}</span>
+                                    <span className="text-xs font-bold text-[#4C6B35]">₹{gp.totalprice?.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
